@@ -79,30 +79,22 @@ export default{
       this.token = this.$store.getters.getToken
     },
     methods:{
-        async formSubmit(){
+         formSubmit(){
            this.loading=!this.loading
-        //    console.log(this.title, this.description)
-           const formdata = new FormData() 
-           console.log(this.image[0])
+     
+           const postData={
+            title:this.title,
+            description:this.description,
+            image:this.image[0]
+           }
 
-           formdata.append('title',this.title)
-           formdata.append('description',this.description)
-           formdata.append('postedBy',this.$store.getters.getUserId)
-           formdata.append('photos',this.image[0])
-        
+           this.$store.dispatch('post/createPost',postData)
 
-        await fetch('http://localhost:3000/createpost',{
-            method:'POST',
-            headers:{
-                'authorization':`Bearer ${this.token}`
-            },
-          
-            body:formdata
-         })
-         this.loading = false;
-         this.title="",
-         this.description="",
-         this.image=[]
+
+           this.loading = false;
+           this.title="",
+           this.description="",
+           this.image=[]
 
          //when user created post then this will increment local postcount state
          this.$store.state.user.postCount++;

@@ -19,5 +19,8 @@ export default{
     updateLikeData(state,payload){
         state.likeCount = payload.likeCount
         state.likedPost = payload.likedPost
+    },
+    storeUserPost(state,payload){
+        state.userPost = payload.post
     }
 }

@@ -19,31 +19,22 @@ export default{
 
     data(){
        return {
-        posts:[],
-        userId:"",
-        token:null
+      
        }
     },
-    async created(){
-        this.userId = this.$store.getters.getUserId
-        this.token = this.$store.getters.getToken
-        // if(this.userId === null){
-        //     this.$router.replace('/login');
-        //     alert("You must be login")
-        // }
-        const response = await fetch("http://localhost:3000/mypost",{
-            method:'POST',
-            headers:{
-                "Content-Type":'application/json',
-                'authorization':`Bearer ${this.token}`
-            },
-            body:JSON.stringify({
-                id:this.userId
-            })
-        })
-
-        const responseData = await response.json()
-        this.posts = responseData
+    computed:{
+        posts(){
+            return this.$store.state.user.userPost
+        }
+    },
+    mounted(){
+        if(!this.posts.length){
+            this.$store.dispatch('user/getPost')
+            console.log("database query executed")
+        }
+        else{
+            console.log("cache successfully")
+        }
     }
 }
 

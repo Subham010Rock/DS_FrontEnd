@@ -16,14 +16,26 @@ export default{
 
     data(){
         return {
-            allPosts:[]
         }
     },
 
-    async created(){
-        const response  = await fetch("http://localhost:3000/allpost")
-        const responseData = await response.json()
-        this.allPosts =responseData
+    computed:{
+       allPosts(){
+            return this.$store.state.post.allPost
+       }
+    },
+
+    async mounted(){
+        if(!this.allPosts.length){
+            const response  = await fetch("http://localhost:3000/allpost")
+            const responseData = await response.json()
+            this.$store.state.post.allPost = responseData
+            console.log("executed database query")
+        }
+        else{
+            console.log("caching successfully")
+        }
+        
     }
 }
 

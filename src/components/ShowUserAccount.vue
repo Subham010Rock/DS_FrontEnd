@@ -146,6 +146,12 @@ export default{
           const profileImage =await result.json()
 
           if(profileImage){
+            const reader = new FileReader();
+            reader.readAsDataURL(profileImage)
+            reader.addEventListener('load',()=>{
+                console.log(reader.result)
+            })
+
             const imageData = profileImage.buffer.toString('base64')
             this.profilePic  = `data:image/jpeg;base64,${imageData}`
             

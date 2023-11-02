@@ -12,7 +12,8 @@ export default{
             likedPost:null,
             likeCount:0,
             postCount:0,
-            profilePic:null
+            profilePic:null,
+            userPost:[]
         }
     },
     actions,
