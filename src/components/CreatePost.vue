@@ -79,30 +79,33 @@ export default{
       this.token = this.$store.getters.getToken
     },
     methods:{
-         formSubmit(){
-           this.loading=!this.loading
+        async formSubmit(){
+           try{
+            this.loading=!this.loading
      
-           const postData={
-            title:this.title,
-            description:this.description,
-            image:this.image[0]
+            const postData={
+               title:this.title,
+               description:this.description,
+               image:this.image[0]
+            }
+            await this.$store.dispatch('post/createPost',postData)
+
+
+            this.loading = false;
+
+            //when user created post then this will increment local postcount state
+            this.$store.state.user.postCount++;
+   
+            
+            this.$router.replace('/');
+            setTimeout(()=>{
+                this.$store.commit('post/uploadPost')
+            },300)
            }
-
-           this.$store.dispatch('post/createPost',postData)
-
-
-           this.loading = false;
-           this.title="",
-           this.description="",
-           this.image=[]
-
-         //when user created post then this will increment local postcount state
-         this.$store.state.user.postCount++;
-         
-         
-         this.$router.replace('/');
-         
-        //  this.$router.go()  it will refresh the current route 
+           catch(error){
+              alert("Post not uploaded")
+              this.$router.go()
+           } 
         }
     },
     watch:{

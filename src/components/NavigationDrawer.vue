@@ -117,6 +117,9 @@
         toLogout(){
           if(!this.rail){
             this.$store.dispatch('logout')
+            setTimeout(()=>{
+              this.$store.commit('loggedOut')
+              },300)
           }
         },
         showAccount(){

@@ -23,7 +23,7 @@
             label="Age"
             type="number"
           ></v-text-field>
-          <v-btn type="submit" block class="mt-2" bg :disabled="!form">SignUp</v-btn>
+          <v-btn :loading="loading" type="submit" block class="mt-2" bg :disabled="!form">SignUp</v-btn>
         
         </v-form>
       </v-sheet><br>
@@ -42,6 +42,7 @@
     export default{
       data(){
         return {
+          loading:false,
           form:false,
           name:null,
           nameRules:[
@@ -89,13 +90,25 @@
       methods:{
         async formSubmit(){
 
-          await this.$store.dispatch('signupUser',{
+          try{
+            this.loading = true;
+            await this.$store.dispatch('signupUser',{
               name:this.name,
               email:this.email,
               password:this.password,
               age:this.age
             })
+           this.loading = false
+          }
+
+          catch(error){
+            this.loading = false;
+            alert("Something Went Wrong")
+            this.$router.go()
+          }
+         
         }
+       
       }
     }
     

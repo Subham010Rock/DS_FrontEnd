@@ -87,11 +87,11 @@
           scrim="#036358"
           class="align-center justify-center"
         >
-          <v-btn variant="flat" @click="explorePost">See more info</v-btn>
-        </v-overlay>
-      </v-card>
-    </v-hover>
-  </div>
+        <v-btn variant="flat" @click="explorePost">See more info</v-btn>
+      </v-overlay>
+    </v-card>
+  </v-hover>
+</div>
 </template>
 
 <script>

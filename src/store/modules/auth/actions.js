@@ -1,4 +1,5 @@
 let timer;
+import {wait} from "../../../service/setTimeout"
 export default{
     likeStatus(context,payload){
         context.commit('setLike',payload)
@@ -20,6 +21,8 @@ export default{
             })
             const responseData = await response.json()
 
+            await wait();
+
             const expiresIn = 3600000;
             const expirationDate = new Date().getTime() + expiresIn
 
@@ -35,7 +38,6 @@ export default{
             localStorage.setItem('userName',responseData.user.name)
             localStorage.setItem('email',responseData.user.email)
             localStorage.setItem('age',responseData.user.age)
-            console.log(responseData.user.postCount)
             context.dispatch('setUser',{
               id:responseData.user._id,
               token:responseData.token,
@@ -63,6 +65,8 @@ export default{
             })
           })
 
+          await wait()
+
           // const responseData = await response.json()
 
 
@@ -85,7 +89,6 @@ export default{
         
         context.commit('logoutUser')
 
-        window.location.href='/'
 
         await fetch("http://localhost:3000/user/logout",{
             method:'POST',

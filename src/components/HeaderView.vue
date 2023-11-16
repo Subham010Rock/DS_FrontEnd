@@ -36,8 +36,13 @@ export default{
     }
   },
   methods:{
-    logout(){
-      this.$store.dispatch('logout')
+    async logout(){
+      await this.$store.dispatch('logout')
+      
+      setTimeout(()=>{
+        this.$store.commit('loggedOut')
+      },300)
+     
     }
   }
     

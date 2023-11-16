@@ -14,7 +14,7 @@
         label="Password"
         type="password"
       ></v-text-field>
-      <v-btn type="submit" block class="mt-2" :disabled="!form">Login</v-btn>
+      <v-btn :loading="loading" type="submit" block class="mt-2" :disabled="!form">Login</v-btn>
     </v-form>
   </v-sheet><br>
 
@@ -28,6 +28,7 @@
 <script>
   export default {
     data: () => ({
+      loading:false,
       form:false,
       email: '',
       emailRules: [
@@ -55,13 +56,30 @@
     }),
     methods:{
         async formSubmit(){
+            this.loading = true
 
-            await this.$store.dispatch('loginUser',{
+            try{
+              await this.$store.dispatch('loginUser',{
                     email:this.email,
                     password:this.password
-            })
+                  })
+
+              this.loading = false
+
         
-            this.$router.replace('/')
+              this.$router.replace('/')
+
+              setTimeout(() => {
+              this.$store.commit('loggedIn')
+              },300)
+            }
+
+            catch(error){
+                this.loading = false
+                alert("logged in Failed either password or email is wrong");
+                this.$router.go()
+            }
+           
 
         }
     }

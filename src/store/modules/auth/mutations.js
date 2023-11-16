@@ -13,5 +13,11 @@ export default{
     },
     setLike(state,payload){
         state.isLike=payload.like
+    },
+    loggedIn(){
+        alert("Logged In Successfully")
+    },
+    loggedOut(){
+        alert("Logout Successfully")
     }
 }

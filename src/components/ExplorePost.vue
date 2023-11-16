@@ -1,7 +1,8 @@
 <template>
-   <v-card style="padding: 5rem;" v-if="post!==null" >
+   <v-card id="card" style="padding: 5rem;" v-if="post!==null" >
   
    <v-img 
+      id="image"
       cover 
       :src="img" style="max-width: 100%; max-height: 50rem;">
       <v-toolbar color="rgba(0, 0, 0, 0)">
@@ -32,7 +33,8 @@
       </v-toolbar>
   </v-img>
     <div class="container">
-      <div class="ele1"><v-btn
+      <div class="ele1"><v-btn 
+        id="like"
         class="ma-2"
         variant="text"
         icon="mdi-thumb-up"
@@ -132,7 +134,8 @@ export default{
         rating:0,
         isRated:false,
         currentLoggedinUserId:this.$store.getters.getUserId,
-        dialog:false
+        dialog:false,
+        test:null
   
        }
     },
@@ -156,21 +159,19 @@ export default{
 
         this.token =  this.$store.getters.getToken
         const result = await fetch("http://localhost:3000/postbyid",{
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json',
-                'authorization':`Bearer ${this.token}`
-            },
-            body:JSON.stringify(
-                {id:this.id}
+          method:'POST',
+          headers:{
+            'Content-Type':'application/json',
+            'authorization':`Bearer ${this.token}`
+          },
+          body:JSON.stringify(
+            {id:this.id}
             )
-
-        })
-
-
-        const responseData = await result.json()
-
-        this.likeCount = responseData.likedBy.length
+            
+          })
+          
+          const responseData = await result.json()
+          this.likeCount = responseData.likedBy.length
         this.viewCount = responseData.viewedBy.length
         this.post = responseData
         this.rating = this.Avgrating
@@ -188,6 +189,7 @@ export default{
           })
         })
         const response = await checkLike.json()
+        console.log(response)
         if(response){
           this.buttonColor = 'blue-lighten-2'
           this.click=true
@@ -209,6 +211,7 @@ export default{
           })
         })
         const viewResult = await checkView.json()
+        console.log("ViewResult", viewResult)
         if(!viewResult){
           this.viewCount++
         }
@@ -225,6 +228,8 @@ export default{
         })
 
         this.isRated = await israteResponse.json()
+
+        console.log("rated",this.isRated)
     },
     methods:{
       async like(){
@@ -317,13 +322,16 @@ export default{
             )
         })
         if(!response.ok){
-          console.log("not deleted")
+          alert("Post Not Deleted")
           this.$router.go()
         }
         else{
-          console.log("deleted")
           this.$store.state.user.postCount--;
+          this.$store.commit('post/removePost',{postId:this.post._id})
           this.$router.go(-1)
+          setTimeout(()=>{
+            this.$store.commit('post/deletePost')
+          },300)
         }
 
       },

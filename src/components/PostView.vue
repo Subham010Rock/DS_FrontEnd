@@ -26,6 +26,7 @@ export default{
     },
 
     async mounted(){
+        console.log(this.allPosts)
         if(!this.allPosts.length){
             const response  = await fetch("http://localhost:3000/allpost")
             const responseData = await response.json()
