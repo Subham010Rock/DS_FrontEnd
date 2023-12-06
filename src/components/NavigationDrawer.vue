@@ -8,7 +8,7 @@
           location="right"
           @click="rail = false"
         >
-          <v-list-item
+          <v-list-item v-if="isAuth"
             :prepend-avatar="profilePic"
             :title="userName"
             nav
@@ -67,7 +67,6 @@
         </v-navigation-drawer>
         <v-main>
             <router-view></router-view>
-        
         </v-main>
       </v-layout>
     </v-card>
